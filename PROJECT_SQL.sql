@@ -174,6 +174,43 @@ FROM COURSE_RATINGS;
 
 SELECT
     c.course_name,
+    COUNT(e.student_id) AS total_enrollments
+FROM courses c
+LEFT JOIN enrollments e
+    ON c.course_id = e.course_id
+GROUP BY c.course_name
+ORDER BY c.course_name;
+
+
+SELECT
+    s.student_name,
+    c.course_name,
+    e.completion_percent
+FROM enrollments e
+JOIN students s
+    ON e.student_id = s.student_id
+JOIN courses c
+    ON e.course_id = c.course_id
+WHERE e.completion_percent < 50
+ORDER BY s.student_name;
+
+
+
+
+SELECT
+    cat.category_name,
+    COUNT(c.course_id) AS total_courses
+FROM categories cat
+LEFT JOIN courses c
+    ON cat.category_id = c.category_id
+GROUP BY cat.category_name
+ORDER BY cat.category_name;
+
+
+
+
+SELECT
+    c.course_name,
     cat.category_name,
     AVG(r.rating) AS avg_rating
 FROM courses c
@@ -231,5 +268,6 @@ JOIN students s
 GROUP BY
     s.student_name
 HAVING COUNT(e.course_id) > 1;
+
 
 
